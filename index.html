@@ -364,10 +364,11 @@ function allRenderedItems(section,trip) {
   return out;
 }
 
+
 function renderHome() {
   const app = document.getElementById("app");
 
-  if(!state.trips.length) {
+  if (!state.trips.length) {
     app.innerHTML = `<div class="card empty">
       <h2>Your trips will appear here</h2>
       <p>Create your first packing list to get started.</p>
@@ -376,10 +377,6 @@ function renderHome() {
     return;
   }
 
-  app.innerHTML = `<div class="settings-row">
-    <div>
-      app.innerHTML = `<div class="settings-row">
-    <div>
   app.innerHTML = `<div class="settings-row">
     <div>
       <h2>Your trips</h2>
@@ -407,7 +404,6 @@ function renderHome() {
     }).join("")}
   </div>`;
 }
-
 function openTrip(id) {
   currentTripId = id;
   filter = "all";
