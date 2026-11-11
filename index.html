@@ -1,80 +1,152 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#f8f6f1">
+<meta name="theme-color" content="#fee5f2">
 <title>My Packing Lists</title>
 <style>
-:root{
-  --bg:#fee5f2;
-  --card:#fff;
-  --ink:#35352f;
-  --muted:#89877f;
-  --green:#ff69b4;
-  --line:#e9e6de;
-  --danger:#a6534b;
+:root {
+  --bg: #fee5f2;
+  --card: #fff;
+  --ink: #35352f;
+  --muted: #89877f;
+  --green: #ff69b4;
+  --line: #e9e6de;
+  --danger: #a6534b;
 }
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:22px 16px 50px}
-main{max-width:760px;margin:auto}
-h1{font-family:Georgia,serif;font-weight:400;font-size:34px;margin:12px 0 5px}
-h2{font-family:Georgia,serif;font-weight:400;font-size:25px;margin:0}
-.subtitle{color:var(--muted);font-size:14px;margin-bottom:24px}
-button,input{font:inherit}
-button{cursor:pointer;border:1px solid var(--line);border-radius:30px;padding:9px 14px;background:white;color:var(--ink)}
-button.primary{background:var(--green);color:white;border-color:var(--green)}
-button.danger{color:var(--danger)}
-button.small{font-size:12px;padding:6px 10px}
-button:disabled{opacity:.45;cursor:default}
-input[type=text],input[type=number]{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;color:var(--ink);min-width:0}
-input[type=number]{width:85px}
-.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 20px}
-.card,.section{background:white;border:1px solid var(--line);border-radius:16px}
-.card{padding:18px;margin:12px 0}
-.trip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
-.trip-card{padding:16px;border:1px solid var(--line);border-radius:14px;background:white}
-.trip-card h3{font-size:17px;margin:0 0 6px}
-.muted{color:var(--muted);font-size:12px}
-.progress-track{height:8px;background:#ecebe5;border-radius:20px;overflow:hidden;margin:12px 0 8px}
-.progress-fill{height:100%;background:var(--green);width:0}
-.progress-top{display:flex;justify-content:space-between;align-items:center}
-.percent{font-family:Georgia,serif;font-size:30px;color:var(--green)}
-.filters{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
-.filters button.active{background:var(--green);color:white;border-color:var(--green)}
-.section{margin:10px 0;overflow:hidden}
-.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px}
-.section-heading{min-width:0;flex:1;cursor:pointer}
-.section-title{font-size:15px;font-weight:650;overflow-wrap:anywhere}
-.section-count{font-size:12px;color:var(--muted);margin-top:4px}
-.section-tools{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
-.items{padding:0 16px 12px;border-top:1px solid var(--line)}
-.item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0eee9;min-height:44px}
-.item:last-child{border-bottom:0}
-.item input[type=checkbox]{width:19px;height:19px;accent-color:var(--green);flex-shrink:0}
-.item-text{flex:1;min-width:0;font-size:14px;overflow-wrap:anywhere}
-.item.done .item-text{text-decoration:line-through;color:#aaa79e}
-.item-edit{flex:1;width:100%;font-size:14px}
-.item-actions{display:flex;gap:4px}
-.add-row{display:flex;gap:8px;margin-top:12px}
-.add-row input{flex:1}
-.inline-edit{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
-.settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.empty{text-align:center;color:var(--muted);padding:28px}
-.modal-backdrop{position:fixed;inset:0;background:#0006;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}
-.modal{background:white;border-radius:18px;padding:22px;max-width:420px;width:100%;box-shadow:0 12px 40px #0002}
-.modal h3{margin:0 0 14px}
-.modal input{width:100%;margin:7px 0 14px}
-.modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
-footer{text-align:center;color:var(--muted);font-size:12px;margin-top:25px}
-@media(max-width:520px){.section-head{align-items:flex-start}.section-tools{max-width:116px}.section-tools button{padding:5px 8px}.topbar{align-items:flex-start}}
-@media print{body{background:white;padding:0}.no-print,button,.section-tools,.add-row,.item-actions{display:none!important}.section{break-inside:avoid}.items{display:block!important}}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  padding: 22px 16px 50px;
+}
+main { max-width: 760px; margin: auto; }
+h1 { font-family: Georgia, serif; font-weight: 400; font-size: 34px; margin: 12px 0 5px; }
+h2 { font-family: Georgia, serif; font-weight: 400; font-size: 25px; margin: 0; }
+.subtitle { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+button, input { font: inherit; }
+button {
+  cursor: pointer;
+  border: 1px solid var(--line);
+  border-radius: 30px;
+  padding: 9px 14px;
+  background: white;
+  color: var(--ink);
+}
+button.primary { background: var(--green); color: white; border-color: var(--green); }
+button.danger { color: var(--danger); }
+button.small { font-size: 12px; padding: 6px 10px; }
+button:disabled { opacity: .45; cursor: default; }
+input[type=text], input[type=number] {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+  color: var(--ink);
+  min-width: 0;
+}
+input[type=number] { width: 85px; }
+.topbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 12px 0 20px; }
+.card, .section { background: white; border: 1px solid var(--line); border-radius: 16px; }
+.card { padding: 18px; margin: 12px 0; }
+.trip-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(240px,1fr)); gap: 12px; }
+.trip-card { padding: 16px; border: 1px solid var(--line); border-radius: 14px; background: white; }
+.trip-card h3 { font-size: 17px; margin: 0 0 6px; }
+.muted { color: var(--muted); font-size: 12px; }
+.progress-track { height: 8px; background: #ecebe5; border-radius: 20px; overflow: hidden; margin: 12px 0 8px; }
+.progress-fill { height: 100%; background: var(--green); width: 0; }
+.progress-top { display: flex; justify-content: space-between; align-items: center; }
+.percent { font-family: Georgia,serif; font-size: 30px; color: var(--green); }
+.filters { display: flex; gap: 8px; margin: 16px 0; flex-wrap: wrap; }
+.filters button.active { background: var(--green); color: white; border-color: var(--green); }
+.section { margin: 10px 0; overflow: hidden; }
+.section-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 15px 16px; }
+.section-heading { min-width: 0; flex: 1; cursor: pointer; }
+.section-title { font-size: 15px; font-weight: 650; overflow-wrap: anywhere; }
+.section-count { font-size: 12px; color: var(--muted); margin-top: 4px; }
+.section-tools { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; }
+.items { padding: 0 16px 12px; border-top: 1px solid var(--line); }
+.item { display: flex; align-items: center; gap: 10px; padding: 9px 0; border-bottom: 1px solid #f0eee9; min-height: 44px; }
+.item:last-child { border-bottom: 0; }
+.item input[type=checkbox] { width: 19px; height: 19px; accent-color: var(--green); flex-shrink: 0; }
+.item-text { flex: 1; min-width: 0; font-size: 14px; overflow-wrap: anywhere; }
+.item.done .item-text { text-decoration: line-through; color: #aaa79e; }
+.item-edit { flex: 1; width: 100%; font-size: 14px; }
+.item-actions { display: flex; gap: 4px; }
+.outfit-item { flex-wrap: wrap; }
+.outfit-label { flex: 0 0 125px; }
+.outfit-note {
+  flex: 1 1 180px;
+  min-width: 120px;
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  padding: 9px 10px;
+  background: #fff;
+  color: var(--ink);
+  font-size: 14px;
+}
+.outfit-note:focus { outline: 2px solid var(--green); outline-offset: 1px; }
+
+.tap-to-edit {
+  flex: 1;
+  min-width: 120px;
+  padding: 9px 10px;
+  border: 1px dashed var(--line);
+  border-radius: 9px;
+  color: var(--muted);
+  font-size: 14px;
+  cursor: text;
+  min-height: 38px;
+}
+.tap-to-edit.filled {
+  border-color: transparent;
+  border-style: solid;
+  color: var(--ink);
+}
+.tap-to-edit:hover { border-color: var(--green); }
+.inline-blank-input {
+  flex: 1;
+  min-width: 120px;
+  width: 100%;
+  font-size: 14px;
+}
+.add-row { display: flex; gap: 8px; margin-top: 12px; }
+.add-row input { flex: 1; }
+.inline-edit { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; }
+.settings-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.empty { text-align: center; color: var(--muted); padding: 28px; }
+.modal-backdrop { position: fixed; inset: 0; background: #0006; display: none; align-items: center; justify-content: center; padding: 18px; z-index: 10; }
+.modal { background: white; border-radius: 18px; padding: 22px; max-width: 420px; width: 100%; box-shadow: 0 12px 40px #0002; }
+.modal h3 { margin: 0 0 14px; }
+.modal input { width: 100%; margin: 7px 0 14px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+footer { text-align: center; color: var(--muted); font-size: 12px; margin-top: 25px; }
+@media(max-width:520px) {
+  .section-head { align-items: flex-start; }
+  .section-tools { max-width: 116px; }
+  .section-tools button { padding: 5px 8px; }
+  .topbar { align-items: flex-start; }
+}
+@media print {
+  body { background: white; padding: 0; }
+  .no-print, button, .section-tools, .add-row, .item-actions { display: none !important; }
+  .section { break-inside: avoid; }
+  .items { display: block !important; }
+}
 </style>
 </head>
 <body>
 <main>
   <div class="topbar">
-    <div><h1>My Packing Lists ✈️</h1><div class="subtitle">A little more organised, one trip at a time.</div></div>
+    <div>
+      <h1>My Packing Lists ✈️</h1>
+      <div class="subtitle">A little more organised, one trip at a time.</div>
+    </div>
     <button id="newTripTop" class="primary no-print">＋ New trip</button>
   </div>
   <div id="app"></div>
@@ -98,6 +170,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;margin-top:25px}
 <script>
 const STORAGE_KEY = "packingLists_multiTrip_v2";
 const uid = () => "id_" + Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+
 const starterSections = [
 ["👶 Baby – Travel equipment","Baby monitor|Monitor screen|Monitor clip|Monitor charger and cable|Sound machine|Sound machine cable|Stroller|Stroller rain cover|Stroller bag|Baby carrier|Travel cot|Cot mattress protectors|Cot sheets|Diaper bag|Changing mat|Tummy time mat|Baby blanket"],
 ["👶 Baby – Diapering & feeding","Diapers|Overnight diapers|Swim diapers|Wipes|Bum cream|Microfiber cloths|Bottles|Formula|Baby food|Bottle brush|Bibs|Burp cloths|Baby bowls|Baby spoons|Baby towel"],
@@ -105,7 +178,7 @@ const starterSections = [
 ["👶 Baby – Toiletries & health","Baby soap / body wash|Baby lotion|Vaseline|Nail trimmer|Thermometer|Nose spray|Paracetamol|Teething gel"],
 ["👶 Baby – Documents","Ollie's passport|Birth certificate copy|Residence permit / travel documents"],
 ["🧴 Hair care","Shampoo|Conditioner|Hairbrush|Comb|Hair ties|Bobby pins|Hair clips|Hair oil|Leave-in conditioner|Styling cream|Air dry cream|Dry shampoo|K18 / Olaplex treatment|Blow dryer|Hot brush / blow-dry brush|Straightener"],
-["🧴 Face & skincare","Makeup remover|Cotton pads|Face wash|Hyaluronic acid|Face serums|Face moisturizer|Retinol / A313|Spot cream|Spot stickers|Lip balm|Face-washing headband|Make-up|Make-up brushes"],
+["🧴 Face & skincare","Makeup remover|Cotton pads|Face wash|Hyaluronic acid|Face serums|Face moisturizer|Retinol / A313|Spot cream|Spot stickers|Lip balm|Face-washing headband|Makeup|Makeup brushes"],
 ["🧴 Body toiletries","Body wash|Body lotion|Deodorant|Perfume|Hand lotion|Hand sanitizer|Razor|Self-tanning lotion"],
 ["🪥 Dental & nails","Toothbrush|Toothpaste|Floss|Nail clipper|Nail file|Nail polish|Nail polish remover|Toe separators"],
 ["💊 Medication & supplements","Medication / vitamins|Paracetamol|Ibuprofen|Antacids / Tums|Nausea medication|Prenatals (if applicable)"],
@@ -121,85 +194,154 @@ const starterSections = [
 ["☀️ Summer / beach","Body sunscreen|Face sunscreen|Sun hat / cap|Swimsuits|Beach coverup|Flip flops|Beach bag|Beach towels|Swim diapers|UV tent|Bug spray|After-sun lotion|Baby sun protection"],
 ["🌧️ Rainy weather","Raincoat / waterproof jacket|Umbrella|Baby raincoat|Stroller rain cover"]
 ];
-function makeItem(text){return {id:uid(),text,done:false};}
-function makeStarterSections(){
-  return starterSections.map(([title,raw])=>{
-    let items=raw.split("|").filter(Boolean).map(makeItem);
-    if(title==="👶 Baby – Clothing & entertainment"){
-      items=items.map(item=>{
-        const keys={"Bodysuits / onesies":"bodysuits","Tops":"tops","Bottoms":"bottoms"};
-        return keys[item.text]?{id:uid(),kind:"quantity",quantityKey:keys[item.text],text:item.text}:item;
-      });
+
+function makeItem(text) {
+  return {id:uid(),text,done:false};
+}
+
+function makeStarterSections() {
+  return starterSections.map(([title,raw]) => {
+    let items = raw.split("|").filter(Boolean).map(makeItem);
+
+    if(title === "👶 Baby – Clothing & entertainment") {
+      const keys = {"Bodysuits / onesies":"bodysuits","Tops":"tops","Bottoms":"bottoms"};
+      items = items.map(item => keys[item.text]
+        ? {id:uid(),kind:"quantity",quantityKey:keys[item.text],text:item.text}
+        : item);
     }
-    if(title==="👗 Clothing") items=[{id:uid(),kind:"outfits",text:"Outfits"}];
-    if(title==="🩲 Underwear & sleepwear"){
-      const keys={"Daytime underwear":"daytime","Nighttime underwear":"nighttime","Socks":"socks"};
-      items=items.map(item=>keys[item.text]?{id:uid(),kind:"quantity",quantityKey:keys[item.text],text:item.text}:item);
+
+    if(title === "👗 Clothing") {
+      items = [{id:uid(),kind:"outfits",text:"Outfits"}];
     }
-    if(title==="👟 Shoes") items=items.map(item=>item.text==="__BLANK_SHOE__"?{id:uid(),kind:"blankshoe",text:"",done:false}:item);
+
+    if(title === "🩲 Underwear & sleepwear") {
+      const keys = {"Daytime underwear":"daytime","Nighttime underwear":"nighttime","Socks":"socks"};
+      items = items.map(item => keys[item.text]
+        ? {id:uid(),kind:"quantity",quantityKey:keys[item.text],text:item.text}
+        : item);
+    }
+
+    if(title === "👟 Shoes") {
+      items = items.map(item => item.text === "__BLANK_SHOE__"
+        ? {id:uid(),kind:"blankshoe",text:"",done:false}
+        : item);
+    }
+
     return {id:uid(),title,items,open:true};
   });
 }
+
 let state = loadState();
-let currentTripId = null, filter = "all", editingItemId = null, modalMode = "create", editingTripId = null;
-function loadState(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+let currentTripId = null;
+let filter = "all";
+let editingItemId = null;
+let editingFieldId = null;
+let modalMode = "create";
+let editingTripId = null;
+
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if(saved && Array.isArray(saved.trips)) return saved;
-  }catch(e){}
+  } catch(e) {}
   return {trips:[]};
 }
-function persist(){
-  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
-  catch(e){alert("Your browser could not save the list. You may need to allow local storage or free some browser space.");}
+
+function persist() {
+  try {
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(state));
+  } catch(e) {
+    alert("Your browser could not save the list. You may need to allow local storage or free some browser space.");
+  }
 }
-function currentTrip(){return state.trips.find(t=>t.id===currentTripId);}
-function createTrip(name,days){
-  const trip={id:uid(),name:name.trim()||"New trip",days:Math.max(1,Math.min(365,Number(days)||1)),sections:makeStarterSections(),createdAt:Date.now()};
-  state.trips.push(trip);persist();currentTripId=trip.id;filter="all";render();
+
+function currentTrip() {
+  return state.trips.find(t => t.id === currentTripId);
 }
-function openModal(mode="create",trip=null){
-  modalMode=mode;editingTripId=trip?.id||null;
-  document.getElementById("modalTitle").textContent=mode==="create"?"Create a packing list":"Edit trip details";
-  document.getElementById("saveModal").textContent=mode==="create"?"Create trip":"Save changes";
-  document.getElementById("tripNameInput").value=trip?.name||"";
-  document.getElementById("tripDaysInput").value=trip?.days||7;
-  document.getElementById("modalBackdrop").style.display="flex";
+
+function createTrip(name,days) {
+  const trip = {
+    id:uid(),
+    name:name.trim() || "New trip",
+    days:Math.max(1,Math.min(365,Number(days)||1)),
+    sections:makeStarterSections(),
+    createdAt:Date.now(),
+    checks:{},
+    outfitNotes:{}
+  };
+  state.trips.push(trip);
+  persist();
+  currentTripId = trip.id;
+  filter = "all";
+  render();
+}
+
+function openModal(mode="create",trip=null) {
+  modalMode = mode;
+  editingTripId = trip?.id || null;
+  document.getElementById("modalTitle").textContent = mode === "create" ? "Create a packing list" : "Edit trip details";
+  document.getElementById("saveModal").textContent = mode === "create" ? "Create trip" : "Save changes";
+  document.getElementById("tripNameInput").value = trip?.name || "";
+  document.getElementById("tripDaysInput").value = trip?.days || 7;
+  document.getElementById("modalBackdrop").style.display = "flex";
   document.getElementById("tripNameInput").focus();
 }
-function closeModal(){document.getElementById("modalBackdrop").style.display="none";}
-document.getElementById("cancelModal").onclick=closeModal;
-document.getElementById("modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeModal();});
-document.getElementById("saveModal").onclick=()=>{
-  const name=document.getElementById("tripNameInput").value.trim()||"New trip";
-  const days=Math.max(1,Math.min(365,Number(document.getElementById("tripDaysInput").value)||1));
-  if(modalMode==="create") createTrip(name,days);
-  else{
-    const trip=state.trips.find(t=>t.id===editingTripId);
-    if(trip){trip.name=name;trip.days=days;persist();render();}
+
+function closeModal() {
+  document.getElementById("modalBackdrop").style.display = "none";
+}
+
+document.getElementById("cancelModal").onclick = closeModal;
+
+document.getElementById("modalBackdrop").addEventListener("click",e => {
+  if(e.target.id === "modalBackdrop") closeModal();
+});
+
+document.getElementById("saveModal").onclick = () => {
+  const name = document.getElementById("tripNameInput").value.trim() || "New trip";
+  const days = Math.max(1,Math.min(365,Number(document.getElementById("tripDaysInput").value)||1));
+
+  if(modalMode === "create") {
+    createTrip(name,days);
+  } else {
+    const trip = state.trips.find(t => t.id === editingTripId);
+    if(trip) {
+      trip.name = name;
+      trip.days = days;
+      persist();
+      render();
+    }
   }
   closeModal();
 };
-document.getElementById("newTripTop").onclick=()=>openModal("create");
-function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
-function allRenderedItems(section,trip){
-  const out=[];
-  for(const item of section.items){
-    if(item.kind==="outfits"){
-      for(let n=1;n<=trip.days;n++){
-        const id=section.id+"_outfit_"+n;
+
+document.getElementById("newTripTop").onclick = () => openModal("create");
+
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g,c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+
+function allRenderedItems(section,trip) {
+  const out = [];
+
+  for(const item of section.items) {
+    if(item.kind === "outfits") {
+      for(let n=1;n<=trip.days;n++) {
+        const id = section.id + "_outfit_" + n;
         out.push({
           id,
           text:`Day ${n} outfit`,
           done:!!trip.checks?.[id],
           dynamic:true,
           outfit:true,
-          note:trip.outfitNotes?.[id]||""
+          note:trip.outfitNotes?.[id] || ""
         });
       }
-    }else if(item.kind==="quantity"){
-      const id=section.id+"_quantity_"+item.quantityKey;
-      const labels={
+    } else if(item.kind === "quantity") {
+      const id = section.id + "_quantity_" + item.quantityKey;
+      const labels = {
         bodysuits:"Bodysuits / onesies",
         tops:"Tops",
         bottoms:"Bottoms",
@@ -213,144 +355,490 @@ function allRenderedItems(section,trip){
         done:!!trip.checks?.[id],
         dynamic:true
       });
-    }else if(item.kind==="blankshoe"){
+    } else if(item.kind === "blankshoe") {
       out.push({id:item.id,text:item.text||"",done:!!item.done,blank:true});
-    }else{
+    } else {
       out.push(item);
     }
   }
   return out;
 }
-function installDynamicTypes(trip){
-  trip.checks=trip.checks||{};
-  const baby=trip.sections.find(s=>s.title==="👶 Baby – Clothing & entertainment");
-  if(baby){
-    const replace=(label,key)=>{const i=baby.items.findIndex(x=>x.text===label);if(i>=0)baby.items[i]={id:uid(),kind:"quantity",quantityKey:key,text:label,done:false};};
-    replace("Bodysuits / onesies","bodysuits");replace("Tops","tops");replace("Bottoms","bottoms");
-  }
-  const clothes=trip.sections.find(s=>s.title==="👗 Clothing");
-  if(clothes && !clothes.items.some(x=>x.kind==="outfits"))clothes.items=[{id:uid(),kind:"outfits",text:"Outfits"}];
-  const underwear=trip.sections.find(s=>s.title==="🩲 Underwear & sleepwear");
-  if(underwear){
-    [["Daytime underwear","daytime"],["Nighttime underwear","nighttime"],["Socks","socks"]].forEach(([label,key])=>{
-      const i=underwear.items.findIndex(x=>x.text===label||x.text.startsWith(label+" ("));
-      if(i>=0)underwear.items[i]={id:uid(),kind:"quantity",quantityKey:key,text:label};
-    });
-  }
-  trip.sections.forEach(s=>s.items.forEach((it,i)=>{
-    if(it.text==="__BLANK_SHOE__")s.items[i]={id:uid(),kind:"blankshoe",text:""};
-  }));
-}
-function renderHome(){
-  const app=document.getElementById("app");
-  if(!state.trips.length){
-    app.innerHTML=`<div class="card empty"><h2>Your trips will appear here</h2><p>Create your first packing list to get started.</p><button class="primary" onclick="openModal('create')">＋ Create your first trip</button></div>`;
+
+function renderHome() {
+  const app = document.getElementById("app");
+
+  if(!state.trips.length) {
+    app.innerHTML = `<div class="card empty">
+      <h2>Your trips will appear here</h2>
+      <p>Create your first packing list to get started.</p>
+      <button class="primary" onclick="openModal('create')">＋ Create your first trip</button>
+    </div>`;
     return;
   }
-  app.innerHTML=`<div class="settings-row"><div><h2>Your trips</h2><div class="muted">Each trip has its own items, duration and packing progress.</div></div><button class="primary" onclick="openModal('create')">＋ New trip</button></div><div class="trip-grid" style="margin-top:16px">${state.trips.map(t=>{
-    const total=t.sections.reduce((n,s)=>n+allRenderedItems(s,t).length,0);
-    const done=t.sections.reduce((n,s)=>n+allRenderedItems(s,t).filter(x=>x.done||t.checks?.[x.id]).length,0);
-    const pct=total?Math.round(done/total*100):0;
-    return `<article class="trip-card"><h3>${escapeHTML(t.name)}</h3><div class="muted">${t.days} days · ${pct}% packed</div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="muted">${done} of ${total} items packed</div><div class="inline-edit" style="margin-top:14px"><button class="primary" onclick="openTrip('${t.id}')">Open list</button><button class="small" onclick="editTrip('${t.id}')">Edit</button><button class="small" onclick="duplicateTrip('${t.id}')">Duplicate trip</button><button class="small danger" onclick="deleteTrip('${t.id}')">Delete</button></div></article>`;
-  }).join("")}</div>`;
+
+  app.innerHTML = `<div class="settings-row">
+    <div>
+      <h2>Your trips</h2>
+      <div class="muted">Each trip has its own items, duration and packing progress.</div>
+    </div>
+    <button class="primary" onclick="openModal('create')">＋ New trip</button>
+  </div>
+  <div class="trip-grid" style="margin-top:16px">
+    ${state.trips.map(t => {
+      const total = t.sections.reduce((n,s) => n + allRenderedItems(s,t).length,0);
+      const done = t.sections.reduce((n,s) => n + allRenderedItems(s,t).filter(x => x.done || t.checks?.[x.id]).length,0);
+      const pct = total ? Math.round(done/total*100) : 0;
+
+      return `<article class="trip-card">
+        <h3>${escapeHTML(t.name)}</h3>
+        <div class="muted">${t.days} days · ${pct}% packed</div>
+        <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="muted">${done} of ${total} items packed</div>
+        <div class="inline-edit" style="margin-top:14px">
+          <button class="primary" onclick="openTrip('${t.id}')">Open list</button>
+          <button class="small" onclick="editTrip('${t.id}')">Edit</button>
+          <button class="small" onclick="duplicateTrip('${t.id}')">Duplicate trip</button>
+          <button class="small danger" onclick="deleteTrip('${t.id}')">Delete</button>
+        </div>
+      </article>`;
+    }).join("")}
+  </div>`;
 }
-function openTrip(id){currentTripId=id;filter="all";render();}
-function editTrip(id){const t=state.trips.find(x=>x.id===id);if(t)openModal("edit",t);}
-function duplicateTrip(id){
-  const source=state.trips.find(x=>x.id===id);if(!source)return;
-  const copy=JSON.parse(JSON.stringify(source));copy.id=uid();copy.name=source.name+" (copy)";copy.createdAt=Date.now();copy.checks={};
-  copy.sections.forEach(s=>{s.id=uid();s.items.forEach(i=>{i.id=uid();i.done=false;});});
-  state.trips.push(copy);persist();render();
+
+function openTrip(id) {
+  currentTripId = id;
+  filter = "all";
+  render();
 }
-function deleteTrip(id){
-  const t=state.trips.find(x=>x.id===id);if(!t)return;
-  if(confirm(`Delete "${t.name}" and its packing progress? This cannot be undone.`)){
-    state.trips=state.trips.filter(x=>x.id!==id);if(currentTripId===id)currentTripId=null;persist();render();
+
+function editTrip(id) {
+  const t = state.trips.find(x => x.id === id);
+  if(t) openModal("edit",t);
+}
+
+function duplicateTrip(id) {
+  const source = state.trips.find(x => x.id === id);
+  if(!source) return;
+
+  const copy = JSON.parse(JSON.stringify(source));
+  copy.id = uid();
+  copy.name = source.name + " (copy)";
+  copy.createdAt = Date.now();
+  copy.checks = {};
+  copy.outfitNotes = {};
+
+  copy.sections.forEach(s => {
+    s.id = uid();
+    s.items.forEach(i => {
+      i.id = uid();
+      i.done = false;
+    });
+  });
+
+  state.trips.push(copy);
+  persist();
+  render();
+}
+
+function deleteTrip(id) {
+  const t = state.trips.find(x => x.id === id);
+  if(!t) return;
+
+  if(confirm(`Delete "${t.name}" and its packing progress? This cannot be undone.`)) {
+    state.trips = state.trips.filter(x => x.id !== id);
+    if(currentTripId === id) currentTripId = null;
+    persist();
+    render();
   }
 }
-function renderTrip(){
-  const trip=currentTrip(),app=document.getElementById("app");if(!trip){renderHome();return;}
-  const all=trip.sections.flatMap(s=>allRenderedItems(s,trip));
-  const done=all.filter(x=>x.done||trip.checks?.[x.id]).length,pct=all.length?Math.round(done/all.length*100):0;
-  app.innerHTML=`
-  <div class="topbar no-print"><button onclick="backHome()">← All trips</button><div class="inline-edit"><button onclick="editTrip('${trip.id}')">Trip settings</button><button onclick="startNewTrip('${trip.id}')">↻ Start new trip</button><button onclick="window.print()">Print</button></div></div>
-  <h2>${escapeHTML(trip.name)}</h2><div class="subtitle">${trip.days} day${trip.days===1?"":"s"}</div>
-  <div class="card"><div class="progress-top"><strong>Packing progress</strong><div class="percent">${pct}%</div></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="muted">${done} of ${all.length} items packed · Saves automatically</div></div>
-  <div class="filters no-print"><button class="${filter==="all"?"active":""}" onclick="setFilter('all')">All</button><button class="${filter==="todo"?"active":""}" onclick="setFilter('todo')">To pack</button><button class="${filter==="done"?"active":""}" onclick="setFilter('done')">Packed</button><button onclick="addSection()">＋ Add section</button></div>
-  <div id="sections">${trip.sections.map(s=>renderSection(s,trip)).join("")}</div>`;
-}
-function renderSection(section,trip){
-  const items=allRenderedItems(section,trip);
-  const visible=items.filter(it=>filter==="all"||(filter==="done"?(trip.checks?.[it.id]||it.done):!(trip.checks?.[it.id]||it.done)));
-  if(filter!=="all"&&!visible.length)return "";
-  const complete=items.filter(it=>trip.checks?.[it.id]||it.done).length;
-  return `<section class="section"><div class="section-head"><div class="section-heading" onclick="toggleSection('${section.id}')"><div class="section-title">${escapeHTML(section.title)}</div><div class="section-count">${complete} / ${items.length} packed</div></div><div class="section-tools no-print"><button class="small" onclick="renameSection('${section.id}')">Rename</button><button class="small" onclick="duplicateSection('${section.id}')">Duplicate</button><button class="small danger" onclick="removeSection('${section.id}')">×</button><button class="small" onclick="toggleSection('${section.id}')">${section.open?"⌃":"⌄"}</button></div></div>
-  ${section.open?`<div class="items">${visible.map(it=>renderItem(it,section,trip)).join("")}<div class="add-row no-print"><input id="add_${section.id}" type="text" placeholder="Add an item…"><button onclick="addItem('${section.id}')">＋ Add</button></div>${section.items.some(i=>i.kind==="blankshoe")?`<div class="no-print" style="margin-top:8px"><button class="small" onclick="addBlankShoe('${section.id}')">＋ Add another blank shoe line</button></div>`:""}</div>`:""}</section>`;
-}
-function renderItem(item,section,trip){
-  const checked=!!(trip.checks?.[item.id]||item.done);
-  const editable=editingItemId===item.id&&!item.dynamic;
-  return `<div class="item ${checked?"done":""}"><input type="checkbox" ${checked?"checked":""} onchange="toggleItem('${section.id}','${item.id}',this.checked)">${editable?`<input class="item-edit" id="edit_${item.id}" value="${escapeHTML(item.text)}" onkeydown="if(event.key==='Enter')saveItem('${section.id}','${item.id}')"><button class="small" onclick="saveItem('${section.id}','${item.id}')">Save</button>`:`<span class="item-text">${escapeHTML(item.text)}</span>`}<div class="item-actions no-print">${!item.dynamic&&!editable?`<button class="small" onclick="editItem('${item.id}')">Edit</button>`:""}${!item.dynamic?`<button class="small danger" onclick="removeItem('${section.id}','${item.id}')">×</button>`:""}</div></div>`;
-}
-function render(){if(currentTripId&&currentTrip())renderTrip();else{currentTripId=null;renderHome();}}
-function backHome(){currentTripId=null;editingItemId=null;render();}
-function setFilter(f){filter=f;render();}
-function toggleSection(id){const s=currentTrip().sections.find(x=>x.id===id);if(s){s.open=!s.open;persist();render();}}
-function findSection(id){return currentTrip()?.sections.find(s=>s.id===id);}
-function toggleItem(sectionId,itemId,checked){
-  const t=currentTrip(),s=findSection(sectionId);if(!t||!s)return;
-  const item=allRenderedItems(s,t).find(x=>x.id===itemId);
-  if(item?.dynamic){t.checks=t.checks||{};t.checks[itemId]=checked;}
-  else{const original=s.items.find(x=>x.id===itemId);if(original)original.done=checked;}
-  persist();render();
-}
-function saveOutfitNote(itemId,value){
-  const trip=currentTrip();
-  if(!trip)return;
 
-  trip.outfitNotes=trip.outfitNotes||{};
-  trip.outfitNotes[itemId]=value;
+function renderTrip() {
+  const trip = currentTrip();
+  const app = document.getElementById("app");
+  if(!trip) {
+    renderHome();
+    return;
+  }
+
+  const all = trip.sections.flatMap(s => allRenderedItems(s,trip));
+  const done = all.filter(x => x.done || trip.checks?.[x.id]).length;
+  const pct = all.length ? Math.round(done/all.length*100) : 0;
+
+  app.innerHTML = `
+  <div class="topbar no-print">
+    <button onclick="backHome()">← All trips</button>
+    <div class="inline-edit">
+      <button onclick="editTrip('${trip.id}')">Trip settings</button>
+      <button onclick="startNewTrip('${trip.id}')">↻ Start new trip</button>
+      <button onclick="window.print()">Print</button>
+    </div>
+  </div>
+  <h2>${escapeHTML(trip.name)}</h2>
+  <div class="subtitle">${trip.days} day${trip.days===1?"":"s"}</div>
+  <div class="card">
+    <div class="progress-top">
+      <strong>Packing progress</strong>
+      <div class="percent">${pct}%</div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <div class="muted">${done} of ${all.length} items packed · Saves automatically</div>
+  </div>
+  <div class="filters no-print">
+    <button class="${filter==="all"?"active":""}" onclick="setFilter('all')">All</button>
+    <button class="${filter==="todo"?"active":""}" onclick="setFilter('todo')">To pack</button>
+    <button class="${filter==="done"?"active":""}" onclick="setFilter('done')">Packed</button>
+    <button onclick="addSection()">＋ Add section</button>
+  </div>
+  <div id="sections">${trip.sections.map(s => renderSection(s,trip)).join("")}</div>`;
+}
+
+function renderSection(section,trip) {
+  const items = allRenderedItems(section,trip);
+  const visible = items.filter(it =>
+    filter === "all" ||
+    (filter === "done" ? (trip.checks?.[it.id] || it.done) : !(trip.checks?.[it.id] || it.done))
+  );
+
+  if(filter !== "all" && !visible.length) return "";
+
+  const complete = items.filter(it => trip.checks?.[it.id] || it.done).length;
+
+  return `<section class="section">
+    <div class="section-head">
+      <div class="section-heading" onclick="toggleSection('${section.id}')">
+        <div class="section-title">${escapeHTML(section.title)}</div>
+        <div class="section-count">${complete} / ${items.length} packed</div>
+      </div>
+      <div class="section-tools no-print">
+        <button class="small" onclick="renameSection('${section.id}')">Rename</button>
+        <button class="small" onclick="duplicateSection('${section.id}')">Duplicate</button>
+        <button class="small danger" onclick="removeSection('${section.id}')">×</button>
+        <button class="small" onclick="toggleSection('${section.id}')">${section.open?"⌃":"⌄"}</button>
+      </div>
+    </div>
+    ${section.open ? `<div class="items">
+      ${visible.map(it => renderItem(it,section,trip)).join("")}
+      <div class="add-row no-print">
+        <input id="add_${section.id}" type="text" placeholder="Add an item…">
+        <button onclick="addItem('${section.id}')">＋ Add</button>
+      </div>
+      ${section.items.some(i => i.kind === "blankshoe") ? `<div class="no-print" style="margin-top:8px"><button class="small" onclick="addBlankShoe('${section.id}')">＋ Add another blank shoe line</button></div>` : ""}
+    </div>` : ""}
+  </section>`;
+}
+
+function renderItem(item,section,trip) {
+  const checked = !!(trip.checks?.[item.id] || item.done);
+  const editable = editingItemId === item.id && !item.dynamic;
+
+  if(item.outfit) {
+    const editing = editingFieldId === item.id;
+
+    return `<div class="item outfit-item ${checked?"done":""}">
+      <input type="checkbox" ${checked?"checked":""}
+        onchange="toggleItem('${section.id}','${item.id}',this.checked)">
+      <span class="item-text outfit-label">${escapeHTML(item.text)}</span>
+      ${editing
+        ? `<input class="outfit-note" id="field_${item.id}" type="text"
+            aria-label="What will you wear for ${escapeHTML(item.text)}?"
+            placeholder="What will you wear?"
+            value="${escapeHTML(item.note)}"
+            oninput="saveOutfitNote('${item.id}',this.value)"
+            onblur="finishFieldEdit()"
+            onkeydown="if(event.key==='Enter')this.blur()">`
+        : `<span class="tap-to-edit ${item.note?"filled":""}"
+            onclick="editField('${item.id}')">
+            ${item.note ? escapeHTML(item.note) : "Tap to add outfit…"}
+          </span>`
+      }
+    </div>`;
+  }
+
+  if(item.blank) {
+    const editing = editingFieldId === item.id;
+
+    return `<div class="item ${checked?"done":""}">
+      <input type="checkbox" ${checked?"checked":""}
+        onchange="toggleItem('${section.id}','${item.id}',this.checked)">
+      ${editing
+        ? `<input class="inline-blank-input" id="field_${item.id}" type="text"
+            placeholder="Enter shoe…"
+            value="${escapeHTML(item.text)}"
+            oninput="saveBlankField('${section.id}','${item.id}',this.value)"
+            onblur="finishFieldEdit()"
+            onkeydown="if(event.key==='Enter')this.blur()">`
+        : `<span class="tap-to-edit ${item.text?"filled":""}"
+            onclick="editField('${item.id}')">
+            ${item.text ? escapeHTML(item.text) : "Tap to add shoe…"}
+          </span>`
+      }
+      <div class="item-actions no-print">
+        <button class="small danger" onclick="removeItem('${section.id}','${item.id}')">×</button>
+      </div>
+    </div>`;
+  }
+
+  return `<div class="item ${checked?"done":""}">
+    <input type="checkbox" ${checked?"checked":""}
+      onchange="toggleItem('${section.id}','${item.id}',this.checked)">
+    ${editable
+      ? `<input class="item-edit" id="edit_${item.id}" value="${escapeHTML(item.text)}"
+          onkeydown="if(event.key==='Enter')saveItem('${section.id}','${item.id}')">
+         <button class="small" onclick="saveItem('${section.id}','${item.id}')">Save</button>`
+      : `<span class="item-text">${escapeHTML(item.text)}</span>`
+    }
+    <div class="item-actions no-print">
+      ${!item.dynamic && !editable ? `<button class="small" onclick="editItem('${item.id}')">Edit</button>` : ""}
+      ${!item.dynamic ? `<button class="small danger" onclick="removeItem('${section.id}','${item.id}')">×</button>` : ""}
+    </div>
+  </div>`;
+}
+
+function render() {
+  if(currentTripId && currentTrip()) renderTrip();
+  else {
+    currentTripId = null;
+    renderHome();
+  }
+}
+
+function backHome() {
+  currentTripId = null;
+  editingItemId = null;
+  editingFieldId = null;
+  render();
+}
+
+function setFilter(f) {
+  filter = f;
+  editingFieldId = null;
+  render();
+}
+
+function toggleSection(id) {
+  const s = currentTrip().sections.find(x => x.id === id);
+  if(s) {
+    s.open = !s.open;
+    persist();
+    render();
+  }
+}
+
+function findSection(id) {
+  return currentTrip()?.sections.find(s => s.id === id);
+}
+
+function toggleItem(sectionId,itemId,checked) {
+  const t = currentTrip();
+  const s = findSection(sectionId);
+  if(!t || !s) return;
+
+  const item = allRenderedItems(s,t).find(x => x.id === itemId);
+
+  if(item?.dynamic) {
+    t.checks = t.checks || {};
+    t.checks[itemId] = checked;
+  } else {
+    const original = s.items.find(x => x.id === itemId);
+    if(original) original.done = checked;
+  }
+
+  persist();
+  render();
+}
+
+function saveOutfitNote(itemId,value) {
+  const trip = currentTrip();
+  if(!trip) return;
+
+  trip.outfitNotes = trip.outfitNotes || {};
+  trip.outfitNotes[itemId] = value;
   persist();
 }
-function editItem(id){editingItemId=id;render();}
-function saveItem(sectionId,id){
-  const s=findSection(sectionId),item=s?.items.find(x=>x.id===id);const input=document.getElementById("edit_"+id);
-  if(item&&input){item.text=input.value.trim()||item.text;persist();}
-  editingItemId=null;render();
+
+function editField(id) {
+  editingFieldId = id;
+  render();
+
+  const input = document.getElementById("field_" + id);
+  if(input) {
+    input.focus();
+    input.setSelectionRange(input.value.length,input.value.length);
+  }
 }
-function addItem(sectionId){
-  const s=findSection(sectionId),input=document.getElementById("add_"+sectionId);if(!s||!input)return;
-  const text=input.value.trim();if(!text)return;s.items.push(makeItem(text));persist();render();
+
+function saveBlankField(sectionId,itemId,value) {
+  const section = findSection(sectionId);
+  const item = section?.items.find(i => i.id === itemId);
+
+  if(item) {
+    item.text = value;
+    persist();
+  }
 }
-function removeItem(sectionId,id){
-  const s=findSection(sectionId);if(!s)return;
-  if(confirm("Remove this item?")){s.items=s.items.filter(x=>x.id!==id);if(currentTrip().checks)delete currentTrip().checks[id];persist();render();}
+
+function finishFieldEdit() {
+  persist();
+  editingFieldId = null;
+  render();
 }
-function renameSection(id){
-  const s=findSection(id);if(!s)return;const name=prompt("Section name:",s.title);
-  if(name&&name.trim()){s.title=name.trim();persist();render();}
+
+function editItem(id) {
+  editingItemId = id;
+  render();
 }
-function duplicateSection(id){
-  const t=currentTrip(),s=findSection(id);if(!s)return;
-  const copy=JSON.parse(JSON.stringify(s));copy.id=uid();copy.title=s.title+" (copy)";copy.items.forEach(i=>{i.id=uid();i.done=false;});copy.open=true;t.sections.splice(t.sections.indexOf(s)+1,0,copy);persist();render();
+
+function saveItem(sectionId,id) {
+  const s = findSection(sectionId);
+  const item = s?.items.find(x => x.id === id);
+  const input = document.getElementById("edit_" + id);
+
+  if(item && input) {
+    item.text = input.value.trim() || item.text;
+    persist();
+  }
+
+  editingItemId = null;
+  render();
 }
-function removeSection(id){
-  const t=currentTrip();if(!confirm("Remove this entire section?"))return;
-  t.sections=t.sections.filter(s=>s.id!==id);persist();render();
+
+function addItem(sectionId) {
+  const s = findSection(sectionId);
+  const input = document.getElementById("add_" + sectionId);
+  if(!s || !input) return;
+
+  const text = input.value.trim();
+  if(!text) return;
+
+  s.items.push(makeItem(text));
+  persist();
+  render();
 }
-function addSection(){
-  const t=currentTrip(),name=prompt("Name your new section:");if(!name||!name.trim())return;
-  t.sections.push({id:uid(),title:name.trim(),items:[],open:true});persist();render();
+
+function removeItem(sectionId,id) {
+  const s = findSection(sectionId);
+  if(!s) return;
+
+  if(confirm("Remove this item?")) {
+    s.items = s.items.filter(x => x.id !== id);
+    if(currentTrip().checks) delete currentTrip().checks[id];
+    persist();
+    render();
+  }
 }
-function addBlankShoe(sectionId){
-  const s=findSection(sectionId);if(!s)return;
-  s.items.push({id:uid(),kind:"blankshoe",text:"",done:false});persist();render();
+
+function renameSection(id) {
+  const s = findSection(id);
+  if(!s) return;
+
+  const name = prompt("Section name:",s.title);
+  if(name && name.trim()) {
+    s.title = name.trim();
+    persist();
+    render();
+  }
 }
-function startNewTrip(id){
-  const t=state.trips.find(x=>x.id===id);if(!t)return;
-  if(!confirm(`Start a new packing run for "${t.name}"? This will clear checkmarks but keep your sections and custom items.`))return;
-  t.checks={};t.sections.forEach(s=>s.items.forEach(i=>{i.done=false;}));persist();render();
+
+function duplicateSection(id) {
+  const t = currentTrip();
+  const s = findSection(id);
+  if(!s) return;
+
+  const copy = JSON.parse(JSON.stringify(s));
+  copy.id = uid();
+  copy.title = s.title + " (copy)";
+  copy.items.forEach(i => {
+    i.id = uid();
+    i.done = false;
+  });
+  copy.open = true;
+
+  t.sections.splice(t.sections.indexOf(s)+1,0,copy);
+  persist();
+  render();
 }
+
+function removeSection(id) {
+  const t = currentTrip();
+  if(!confirm("Remove this entire section?")) return;
+
+  t.sections = t.sections.filter(s => s.id !== id);
+  persist();
+  render();
+}
+
+function addSection() {
+  const t = currentTrip();
+  const name = prompt("Name your new section:");
+  if(!name || !name.trim()) return;
+
+  t.sections.push({id:uid(),title:name.trim(),items:[],open:true});
+  persist();
+  render();
+}
+
+function addBlankShoe(sectionId) {
+  const s = findSection(sectionId);
+  if(!s) return;
+
+  s.items.push({id:uid(),kind:"blankshoe",text:"",done:false});
+  persist();
+  render();
+}
+
+function startNewTrip(id) {
+  const t = state.trips.find(x => x.id === id);
+  if(!t) return;
+
+  if(!confirm(`Start a new packing run for "${t.name}"? This will clear checkmarks but keep your sections and custom items.`)) return;
+
+  t.checks = {};
+  t.sections.forEach(s => s.items.forEach(i => { i.done = false; }));
+  persist();
+  render();
+}
+
+// Migrate older saved underwear placeholders and preserve existing trip data.
+state.trips.forEach(trip => {
+  trip.checks = trip.checks || {};
+  trip.outfitNotes = trip.outfitNotes || {};
+
+  trip.sections.forEach(section => {
+    if(section.title === "🩲 Underwear & sleepwear") {
+      const mapping = {
+        "__Q:Daytime underwear__":"daytime",
+        "__Q:Nighttime underwear__":"nighttime",
+        "__Q:Socks__":"socks"
+      };
+
+      section.items = section.items.map(item =>
+        mapping[item.text]
+          ? {...item,kind:"quantity",quantityKey:mapping[item.text],text:item.text.replace(/^__Q:|__$/g,"")}
+          : item
+      );
+    }
+
+    if(section.title === "👗 Clothing") {
+      const outfitItem = section.items.find(i => i.kind === "outfits" || i.text === "__OUTFITS__" || i.text === "Outfits");
+
+      if(outfitItem) {
+        outfitItem.kind = "outfits";
+        outfitItem.text = "Outfits";
+      } else {
+        section.items.push({id:uid(),kind:"outfits",text:"Outfits"});
+      }
+    }
+
+    // Convert older blank shoe entries to the tap-to-edit format.
+    section.items.forEach(item => {
+      if(item.kind === "blankshoe") {
+        item.text = item.text || "";
+      }
+    });
+  });
+});
+
+persist();
 render();
 </script>
 </body>
