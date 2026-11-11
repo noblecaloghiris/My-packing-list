@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f8f6f1">
+<title>My Packing List</title>
+<style>
+:root {
+  --bg:#f8f6f1; --card:#fff; --ink:#35352f;
+  --muted:#89877f; --green:#65836c; --line:#e9e6de;
+}
+* { box-sizing:border-box }
+body {
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  padding:22px 16px 50px;
+}
+main { max-width:650px; margin:auto }
+h1 { font-family:Georgia,serif; font-weight:400; font-size:34px; margin:12px 0 5px }
+.subtitle { color:var(--muted); font-size:14px; margin-bottom:24px }
+.progress-card {
+  background:var(--card); border-radius:18px; padding:20px;
+  margin-bottom:18px; border:1px solid var(--line);
+}
+.progress-top { display:flex; justify-content:space-between; align-items:center }
+.percent { font-size:32px; color:var(--green); font-family:Georgia,serif }
+.track { height:10px; background:#ecebe5; border-radius:20px; overflow:hidden; margin:12px 0 8px }
+.fill { height:100%; width:0; background:var(--green); transition:width .2s }
+.muted { color:var(--muted); font-size:12px }
+.filters { display:flex; gap:8px; margin:18px 0 }
+button {
+  font:inherit; cursor:pointer; border:1px solid var(--line);
+  border-radius:30px; padding:10px 15px; background:white; color:var(--ink);
+}
+button.active { background:var(--green); color:white; border-color:var(--green) }
+.section {
+  background:white; border:1px solid var(--line);
+  border-radius:14px; margin:10px 0; overflow:hidden;
+}
+.section-head {
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px; cursor:pointer; gap:10px;
+}
+.section-title { font-size:15px; font-weight:600 }
+.section-count { font-size:12px; color:var(--muted); margin-top:4px }
+.arrow { color:var(--muted); font-size:18px }
+.items { padding:0 16px 12px; border-top:1px solid var(--line) }
+.item {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 0; border-bottom:1px solid #f0eee9;
+  font-size:14px; min-height:44px;
+}
+.item:last-child { border-bottom:0 }
+.item input {
+  width:20px; height:20px; accent-color:var(--green);
+  flex-shrink:0;
+}
+.item.done span { text-decoration:line-through; color:#aaa79e }
+.actions { display:flex; justify-content:space-between; gap:10px; margin-top:22px }
+.actions button { font-size:13px }
+.empty { text-align:center; color:var(--muted); padding:25px }
+footer { text-align:center; color:var(--muted); font-size:12px; margin-top:25px }
+</style>
+</head>
+<body>
+<main>
+  <h1>My Packing List ✈️</h1>
+  <div class="subtitle">A little more organised, one trip at a time.</div>
+
+  <div class="progress-card">
+    <div class="progress-top">
+      <strong>Your packing progress</strong>
+      <div class="percent" id="percent">0%</div>
+    </div>
+    <div class="track"><div class="fill" id="fill"></div></div>
+    <div class="muted" id="count">0 items packed</div>
+    <div class="muted" id="saved" style="margin-top:8px">✓ Progress saves automatically</div>
+  </div>
+
+  <div class="filters">
+    <button class="active" data-filter="all">All</button>
+    <button data-filter="todo">To pack</button>
+    <button data-filter="done">Packed</button>
+  </div>
+
+  <div id="sections"></div>
+
+  <div class="actions">
+    <button onclick="resetList()">↻ New trip / Reset</button>
+    <button onclick="window.print()">Print list</button>
+  </div>
+
+  <footer>Your checkmarks are saved on this device ❤️</footer>
+</main>
+
+<script>
+const groups = [
+["👶 Baby – Travel equipment",
+"Baby monitor|Monitor screen|Monitor clip|Monitor charger and cable|Sound machine|Sound machine cable|Stroller|Stroller rain cover|Baby carrier|Travel cot|Cot mattress protectors|Cot sheets|Diaper bag|Bumbo high chair|Baby camping chair|Changing mat|Tummy time mat|UV tent"],
+["👶 Baby – Diapering & feeding",
+"Diapers|Overnight diapers|Swim diapers|Wipes|Bum cream|Vaseline|Microfiber cloths|Bottles|Formula|Bottle brush|Baby bibs|Split bibs|Baby bowls|Baby spoons|Baby towel"],
+["👶 Baby – Clothing & entertainment",
+"Bodysuits / onesies|Pants|Shorts|Sweatshirts|Pajamas|Socks|Baby blanket|Toys|Books|Pacifiers|Favourite comfort toys"],
+["👶 Baby – Toiletries & health",
+"Baby soap / body wash|Baby lotion|Nail trimmer|Thermometer|Nose spray|Paracetamol|Teething gel"],
+["👶 Baby – Documents",
+"Ollie's passport|Birth certificate copy|Residence permit / travel documents"],
+["🧴 Hair care",
+"Shampoo|Conditioner|Hairbrush|Comb|Travel hairbrush|Hair ties|Bobby pins|Twist pins|Gold ponytail holder|Banana clip|Claw clip|Alligator clips|Hair bow|Hair oil|Styling cream|Anti-frizz / air-dry cream|Leave-in conditioner|Dry shampoo|K18 / Olaplex treatment|Blow dryer|Hot brush / blow-dry brush|Straightener"],
+["🧴 Face & skincare",
+"Face wash|Makeup remover|Cotton pads|Face moisturizer|Face SPF|Face serums|Hyaluronic acid serum|Azelaic acid|Niacinamide|Salicylic acid|Retinol / A313|Acne treatment|Spot stickers|Face mask|Lip medication|Lip balm / Vaseline|Face-washing headband"],
+["🧴 Body toiletries",
+"Body wash|Body lotion|Deodorant|Perfume|Hand lotion|Hand sanitizer|Razor|Epilator|Epilator charger|Glow oil|Self-tanning lotion"],
+["🪥 Dental & nails",
+"Toothbrush|Toothpaste|Floss|Nail clipper|Nail file|Nail polish|Nail polish remover|Toe separators"],
+["💊 Medication & supplements",
+"Daily medication|Allergy pills|EpiPen (if prescribed)|Paracetamol|Ibuprofen|Antacids / Tums|Omeprazole|Motion sickness pills – non-drowsy|Motion sickness pills – drowsy|Sea sickness pills|Nausea medication|Vitamins / supplements|Iron|Prenatals (if applicable)|Choline (if applicable)"],
+["👗 Clothing",
+"Tops (5–10)|Bottoms (5–10)|Jeans|Shorts|Dresses / skirts|Sweaters / sweatshirts|Workout sets|Lounge clothes / sweatpants|White button-down shirt|Special occasion outfits|Wedding / formal outfit"],
+["🩲 Underwear & sleepwear",
+"Daytime underwear (7–10)|Nighttime underwear|Socks (7–10 pairs)|Pajama tops|Pajama bottoms|Pajama sets|Sleep shorts|Thick comfy socks|Eye mask|Earplugs"],
+["👟 Shoes",
+"White sneakers|Black sneakers|Other sneakers|Ballet flats|Black leather flip-flops|Tan slides / sandals|Black sandals|Slippers|Boots"],
+["👜 Accessories & jewellery",
+"Everyday purse|Evening clutch|Bum bag|Wallet|Sunglasses|Glasses|Wedding rings|Necklaces|Earrings|Other jewellery|White belt|Brown belt"],
+["💻 Electronics",
+"Phone|Phone charger|Long charging cable|Laptop|Laptop charger|iPad|iPad charger|AirPods|Plug-in headphones|Travel adaptor|External monitor / second screen|Monitor clip|Monitor cable|Portable laptop stand|Mouse|Mouse cable|Keyboard|SIM card|Pencil case|Work notebook"],
+["✈️ Airplane bag",
+"Passport|Wallet|Visa / travel documents|Phone|Phone charger|Headphones|Glasses|Sunglasses|Eye mask|Earplugs|Neck pillow|Back pillow|Foot hammock|Tissues|Hand sanitizer|Hand lotion|Chapstick|Nose moisturizer|Snacks / instant oats|Travel medication|Baby travel essentials"],
+["🏠 Miscellaneous",
+"Microfiber towels|Steamer|Wrinkle-release spray|Laundry bags|Printed documents|Reservations / confirmations"],
+["❄️ Winter / cold weather",
+"Winter coat|Warm sweaters|Thermal layers|Mittens / gloves|Scarf|Beanie|Warm socks|Winter boots|Thick tights"],
+["☀️ Summer / beach",
+"Body sunscreen|Face sunscreen|Sun hat / cap|Swimwear|Beach bag|Swim diapers|UV tent|Bug spray|After-sun lotion|Sandals|Baby sun protection"],
+["🌧️ Rainy weather",
+"Raincoat / waterproof jacket|Umbrella|Waterproof shoes|Extra socks|Waterproof bag|Baby raincoat|Stroller rain cover"],
+["🌴 Tropical / outdoor",
+"Bug spray|After-bite treatment|Extra sunscreen|Lightweight clothing|Swimwear|Reusable water bottles"]
+].map(([title,items])=>({title,items:items.split("|")}));
+
+const STORAGE = "myPackingList_v1";
+let checks = {};
+let filter = "all";
+let expanded = new Set([0]);
+
+try {
+  checks = JSON.parse(localStorage.getItem(STORAGE) || "{}");
+} catch(e) { checks = {}; }
+
+function save() {
+  try {
+    localStorage.setItem(STORAGE, JSON.stringify(checks));
+    document.getElementById("saved").textContent =
+      "✓ Saved automatically";
+  } catch(e) {
+    document.getElementById("saved").textContent =
+      "Unable to save in this browser";
+  }
+}
+
+function updateProgress() {
+  let total = 0, done = 0;
+  groups.forEach((g,i)=>g.items.forEach((item,j)=>{
+    total++;
+    if(checks[i+"-"+j]) done++;
+  }));
+  let pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById("percent").textContent = pct+"%";
+  document.getElementById("fill").style.width = pct+"%";
+  document.getElementById("count").textContent =
+    done+" of "+total+" items packed";
+}
+
+function render() {
+  const root = document.getElementById("sections");
+  root.innerHTML = "";
+
+  groups.forEach((g,i)=>{
+    let visible = g.items.map((item,j)=>({item,j}))
+      .filter(x => filter==="all" ||
+        (filter==="done" ? !!checks[i+"-"+x.j] :
+         !checks[i+"-"+x.j]));
+
+    if(!visible.length) return;
+
+    let done = g.items.filter((x,j)=>checks[i+"-"+j]).length;
+    let section = document.createElement("section");
+    section.className = "section";
+
+    let head = document.createElement("div");
+    head.className = "section-head";
+    head.innerHTML =
+      '<div><div class="section-title"></div>'+
+      '<div class="section-count"></div></div>'+
+      '<span class="arrow"></span>';
+    head.querySelector(".section-title").textContent = g.title;
+    head.querySelector(".section-count").textContent =
+      done+" / "+g.items.length+" packed";
+    head.querySelector(".arrow").textContent =
+      expanded.has(i) ? "⌃" : "⌄";
+
+    head.onclick = () => {
+      expanded.has(i) ? expanded.delete(i) : expanded.add(i);
+      render();
+    };
+    section.appendChild(head);
+
+    if(expanded.has(i)) {
+      let list = document.createElement("div");
+      list.className = "items";
+      visible.forEach(({item,j})=>{
+        let label = document.createElement("label");
+        label.className = "item"+(checks[i+"-"+j]?" done":"");
+        let input = document.createElement("input");
+        input.type = "checkbox";
+        input.checked = !!checks[i+"-"+j];
+        input.addEventListener("change",()=>{
+          checks[i+"-"+j] = input.checked;
+          save();
+          updateProgress();
+          render();
+        });
+        let span = document.createElement("span");
+        span.textContent = item;
+        label.append(input,span);
+        list.appendChild(label);
+      });
+      section.appendChild(list);
+    }
+    root.appendChild(section);
+  });
+
+  if(!root.children.length) {
+    root.innerHTML = '<div class="empty">Nothing here yet ❤️</div>';
+  }
+  updateProgress();
+}
+
+document.querySelectorAll("[data-filter]").forEach(btn=>{
+  btn.onclick=()=>{
+    filter=btn.dataset.filter;
+    document.querySelectorAll("[data-filter]").forEach(b=>
+      b.classList.toggle("active",b===btn));
+    render();
+  };
+});
+
+function resetList() {
+  if(confirm("Reset all packing checkmarks for a new trip?")) {
+    checks={};
+    save();
+    filter="all";
+    expanded=new Set([0]);
+    document.querySelectorAll("[data-filter]").forEach(b=>
+      b.classList.toggle("active",b.dataset.filter==="all"));
+    render();
+  }
+}
+
+render();
+</script>
+</body>
+</html>
