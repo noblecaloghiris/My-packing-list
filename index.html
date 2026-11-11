@@ -1,265 +1,316 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f8f6f1">
-<title>My Packing List</title>
+<title>My Packing Lists</title>
 <style>
-:root {
-  --bg:#f8f6f1; --card:#fff; --ink:#35352f;
-  --muted:#89877f; --green:#65836c; --line:#e9e6de;
-}
-* { box-sizing:border-box }
-body {
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-  padding:22px 16px 50px;
-}
-main { max-width:650px; margin:auto }
-h1 { font-family:Georgia,serif; font-weight:400; font-size:34px; margin:12px 0 5px }
-.subtitle { color:var(--muted); font-size:14px; margin-bottom:24px }
-.progress-card {
-  background:var(--card); border-radius:18px; padding:20px;
-  margin-bottom:18px; border:1px solid var(--line);
-}
-.progress-top { display:flex; justify-content:space-between; align-items:center }
-.percent { font-size:32px; color:var(--green); font-family:Georgia,serif }
-.track { height:10px; background:#ecebe5; border-radius:20px; overflow:hidden; margin:12px 0 8px }
-.fill { height:100%; width:0; background:var(--green); transition:width .2s }
-.muted { color:var(--muted); font-size:12px }
-.filters { display:flex; gap:8px; margin:18px 0 }
-button {
-  font:inherit; cursor:pointer; border:1px solid var(--line);
-  border-radius:30px; padding:10px 15px; background:white; color:var(--ink);
-}
-button.active { background:var(--green); color:white; border-color:var(--green) }
-.section {
-  background:white; border:1px solid var(--line);
-  border-radius:14px; margin:10px 0; overflow:hidden;
-}
-.section-head {
-  display:flex; align-items:center; justify-content:space-between;
-  padding:16px; cursor:pointer; gap:10px;
-}
-.section-title { font-size:15px; font-weight:600 }
-.section-count { font-size:12px; color:var(--muted); margin-top:4px }
-.arrow { color:var(--muted); font-size:18px }
-.items { padding:0 16px 12px; border-top:1px solid var(--line) }
-.item {
-  display:flex; align-items:center; gap:12px;
-  padding:12px 0; border-bottom:1px solid #f0eee9;
-  font-size:14px; min-height:44px;
-}
-.item:last-child { border-bottom:0 }
-.item input {
-  width:20px; height:20px; accent-color:var(--green);
-  flex-shrink:0;
-}
-.item.done span { text-decoration:line-through; color:#aaa79e }
-.actions { display:flex; justify-content:space-between; gap:10px; margin-top:22px }
-.actions button { font-size:13px }
-.empty { text-align:center; color:var(--muted); padding:25px }
-footer { text-align:center; color:var(--muted); font-size:12px; margin-top:25px }
+:root{--bg:#f8f6f1;--card:#fff;--ink:#35352f;--muted:#89877f;--green:#65836c;--line:#e9e6de;--danger:#a6534b}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:22px 16px 50px}
+main{max-width:760px;margin:auto}
+h1{font-family:Georgia,serif;font-weight:400;font-size:34px;margin:12px 0 5px}
+h2{font-family:Georgia,serif;font-weight:400;font-size:25px;margin:0}
+.subtitle{color:var(--muted);font-size:14px;margin-bottom:24px}
+button,input{font:inherit}
+button{cursor:pointer;border:1px solid var(--line);border-radius:30px;padding:9px 14px;background:white;color:var(--ink)}
+button.primary{background:var(--green);color:white;border-color:var(--green)}
+button.danger{color:var(--danger)}
+button.small{font-size:12px;padding:6px 10px}
+button:disabled{opacity:.45;cursor:default}
+input[type=text],input[type=number]{border:1px solid var(--line);border-radius:10px;padding:10px;background:#fff;color:var(--ink);min-width:0}
+input[type=number]{width:85px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:12px 0 20px}
+.card,.section{background:white;border:1px solid var(--line);border-radius:16px}
+.card{padding:18px;margin:12px 0}
+.trip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.trip-card{padding:16px;border:1px solid var(--line);border-radius:14px;background:white}
+.trip-card h3{font-size:17px;margin:0 0 6px}
+.muted{color:var(--muted);font-size:12px}
+.progress-track{height:8px;background:#ecebe5;border-radius:20px;overflow:hidden;margin:12px 0 8px}
+.progress-fill{height:100%;background:var(--green);width:0}
+.progress-top{display:flex;justify-content:space-between;align-items:center}
+.percent{font-family:Georgia,serif;font-size:30px;color:var(--green)}
+.filters{display:flex;gap:8px;margin:16px 0;flex-wrap:wrap}
+.filters button.active{background:var(--green);color:white;border-color:var(--green)}
+.section{margin:10px 0;overflow:hidden}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 16px}
+.section-heading{min-width:0;flex:1;cursor:pointer}
+.section-title{font-size:15px;font-weight:650;overflow-wrap:anywhere}
+.section-count{font-size:12px;color:var(--muted);margin-top:4px}
+.section-tools{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.items{padding:0 16px 12px;border-top:1px solid var(--line)}
+.item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #f0eee9;min-height:44px}
+.item:last-child{border-bottom:0}
+.item input[type=checkbox]{width:19px;height:19px;accent-color:var(--green);flex-shrink:0}
+.item-text{flex:1;min-width:0;font-size:14px;overflow-wrap:anywhere}
+.item.done .item-text{text-decoration:line-through;color:#aaa79e}
+.item-edit{flex:1;width:100%;font-size:14px}
+.item-actions{display:flex;gap:4px}
+.add-row{display:flex;gap:8px;margin-top:12px}
+.add-row input{flex:1}
+.inline-edit{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.settings-row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.empty{text-align:center;color:var(--muted);padding:28px}
+.modal-backdrop{position:fixed;inset:0;background:#0006;display:none;align-items:center;justify-content:center;padding:18px;z-index:10}
+.modal{background:white;border-radius:18px;padding:22px;max-width:420px;width:100%;box-shadow:0 12px 40px #0002}
+.modal h3{margin:0 0 14px}
+.modal input{width:100%;margin:7px 0 14px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+footer{text-align:center;color:var(--muted);font-size:12px;margin-top:25px}
+@media(max-width:520px){.section-head{align-items:flex-start}.section-tools{max-width:116px}.section-tools button{padding:5px 8px}.topbar{align-items:flex-start}}
+@media print{body{background:white;padding:0}.no-print,button,.section-tools,.add-row,.item-actions{display:none!important}.section{break-inside:avoid}.items{display:block!important}}
 </style>
 </head>
 <body>
 <main>
-  <h1>My Packing List ✈️</h1>
-  <div class="subtitle">A little more organised, one trip at a time.</div>
-
-  <div class="progress-card">
-    <div class="progress-top">
-      <strong>Your packing progress</strong>
-      <div class="percent" id="percent">0%</div>
-    </div>
-    <div class="track"><div class="fill" id="fill"></div></div>
-    <div class="muted" id="count">0 items packed</div>
-    <div class="muted" id="saved" style="margin-top:8px">✓ Progress saves automatically</div>
+  <div class="topbar">
+    <div><h1>My Packing Lists ✈️</h1><div class="subtitle">A little more organised, one trip at a time.</div></div>
+    <button id="newTripTop" class="primary no-print">＋ New trip</button>
   </div>
-
-  <div class="filters">
-    <button class="active" data-filter="all">All</button>
-    <button data-filter="todo">To pack</button>
-    <button data-filter="done">Packed</button>
-  </div>
-
-  <div id="sections"></div>
-
-  <div class="actions">
-    <button onclick="resetList()">↻ New trip / Reset</button>
-    <button onclick="window.print()">Print list</button>
-  </div>
-
-  <footer>Your checkmarks are saved on this device ❤️</footer>
+  <div id="app"></div>
+  <footer>Your lists save automatically in this browser ❤️</footer>
 </main>
 
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3 id="modalTitle">New trip</h3>
+    <label class="muted" for="tripNameInput">Trip name</label>
+    <input id="tripNameInput" type="text" placeholder="e.g. US Trip">
+    <label class="muted" for="tripDaysInput">Number of days</label>
+    <input id="tripDaysInput" type="number" min="1" max="365" value="7">
+    <div class="modal-actions">
+      <button id="cancelModal">Cancel</button>
+      <button id="saveModal" class="primary">Create trip</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const groups = [
-["👶 Baby – Travel equipment",
-"Baby monitor|Monitor screen|Monitor clip|Monitor charger and cable|Sound machine|Sound machine cable|Stroller|Stroller rain cover|Baby carrier|Travel cot|Cot mattress protectors|Cot sheets|Diaper bag|Bumbo high chair|Baby camping chair|Changing mat|Tummy time mat|UV tent"],
-["👶 Baby – Diapering & feeding",
-"Diapers|Overnight diapers|Swim diapers|Wipes|Bum cream|Vaseline|Microfiber cloths|Bottles|Formula|Bottle brush|Baby bibs|Split bibs|Baby bowls|Baby spoons|Baby towel"],
-["👶 Baby – Clothing & entertainment",
-"Bodysuits / onesies|Pants|Shorts|Sweatshirts|Pajamas|Socks|Baby blanket|Toys|Books|Pacifiers|Favourite comfort toys"],
-["👶 Baby – Toiletries & health",
-"Baby soap / body wash|Baby lotion|Nail trimmer|Thermometer|Nose spray|Paracetamol|Teething gel"],
-["👶 Baby – Documents",
-"Ollie's passport|Birth certificate copy|Residence permit / travel documents"],
-["🧴 Hair care",
-"Shampoo|Conditioner|Hairbrush|Comb|Travel hairbrush|Hair ties|Bobby pins|Twist pins|Gold ponytail holder|Banana clip|Claw clip|Alligator clips|Hair bow|Hair oil|Styling cream|Anti-frizz / air-dry cream|Leave-in conditioner|Dry shampoo|K18 / Olaplex treatment|Blow dryer|Hot brush / blow-dry brush|Straightener"],
-["🧴 Face & skincare",
-"Face wash|Makeup remover|Cotton pads|Face moisturizer|Face SPF|Face serums|Hyaluronic acid serum|Azelaic acid|Niacinamide|Salicylic acid|Retinol / A313|Acne treatment|Spot stickers|Face mask|Lip medication|Lip balm / Vaseline|Face-washing headband"],
-["🧴 Body toiletries",
-"Body wash|Body lotion|Deodorant|Perfume|Hand lotion|Hand sanitizer|Razor|Epilator|Epilator charger|Glow oil|Self-tanning lotion"],
-["🪥 Dental & nails",
-"Toothbrush|Toothpaste|Floss|Nail clipper|Nail file|Nail polish|Nail polish remover|Toe separators"],
-["💊 Medication & supplements",
-"Daily medication|Allergy pills|EpiPen (if prescribed)|Paracetamol|Ibuprofen|Antacids / Tums|Omeprazole|Motion sickness pills – non-drowsy|Motion sickness pills – drowsy|Sea sickness pills|Nausea medication|Vitamins / supplements|Iron|Prenatals (if applicable)|Choline (if applicable)"],
-["👗 Clothing",
-"Tops (5–10)|Bottoms (5–10)|Jeans|Shorts|Dresses / skirts|Sweaters / sweatshirts|Workout sets|Lounge clothes / sweatpants|White button-down shirt|Special occasion outfits|Wedding / formal outfit"],
-["🩲 Underwear & sleepwear",
-"Daytime underwear (7–10)|Nighttime underwear|Socks (7–10 pairs)|Pajama tops|Pajama bottoms|Pajama sets|Sleep shorts|Thick comfy socks|Eye mask|Earplugs"],
-["👟 Shoes",
-"White sneakers|Black sneakers|Other sneakers|Ballet flats|Black leather flip-flops|Tan slides / sandals|Black sandals|Slippers|Boots"],
-["👜 Accessories & jewellery",
-"Everyday purse|Evening clutch|Bum bag|Wallet|Sunglasses|Glasses|Wedding rings|Necklaces|Earrings|Other jewellery|White belt|Brown belt"],
-["💻 Electronics",
-"Phone|Phone charger|Long charging cable|Laptop|Laptop charger|iPad|iPad charger|AirPods|Plug-in headphones|Travel adaptor|External monitor / second screen|Monitor clip|Monitor cable|Portable laptop stand|Mouse|Mouse cable|Keyboard|SIM card|Pencil case|Work notebook"],
-["✈️ Airplane bag",
-"Passport|Wallet|Visa / travel documents|Phone|Phone charger|Headphones|Glasses|Sunglasses|Eye mask|Earplugs|Neck pillow|Back pillow|Foot hammock|Tissues|Hand sanitizer|Hand lotion|Chapstick|Nose moisturizer|Snacks / instant oats|Travel medication|Baby travel essentials"],
-["🏠 Miscellaneous",
-"Microfiber towels|Steamer|Wrinkle-release spray|Laundry bags|Printed documents|Reservations / confirmations"],
-["❄️ Winter / cold weather",
-"Winter coat|Warm sweaters|Thermal layers|Mittens / gloves|Scarf|Beanie|Warm socks|Winter boots|Thick tights"],
-["☀️ Summer / beach",
-"Body sunscreen|Face sunscreen|Sun hat / cap|Swimwear|Beach bag|Swim diapers|UV tent|Bug spray|After-sun lotion|Sandals|Baby sun protection"],
-["🌧️ Rainy weather",
-"Raincoat / waterproof jacket|Umbrella|Waterproof shoes|Extra socks|Waterproof bag|Baby raincoat|Stroller rain cover"],
-["🌴 Tropical / outdoor",
-"Bug spray|After-bite treatment|Extra sunscreen|Lightweight clothing|Swimwear|Reusable water bottles"]
-].map(([title,items])=>({title,items:items.split("|")}));
-
-const STORAGE = "myPackingList_v1";
-let checks = {};
-let filter = "all";
-let expanded = new Set([0]);
-
-try {
-  checks = JSON.parse(localStorage.getItem(STORAGE) || "{}");
-} catch(e) { checks = {}; }
-
-function save() {
-  try {
-    localStorage.setItem(STORAGE, JSON.stringify(checks));
-    document.getElementById("saved").textContent =
-      "✓ Saved automatically";
-  } catch(e) {
-    document.getElementById("saved").textContent =
-      "Unable to save in this browser";
-  }
-}
-
-function updateProgress() {
-  let total = 0, done = 0;
-  groups.forEach((g,i)=>g.items.forEach((item,j)=>{
-    total++;
-    if(checks[i+"-"+j]) done++;
-  }));
-  let pct = total ? Math.round(done/total*100) : 0;
-  document.getElementById("percent").textContent = pct+"%";
-  document.getElementById("fill").style.width = pct+"%";
-  document.getElementById("count").textContent =
-    done+" of "+total+" items packed";
-}
-
-function render() {
-  const root = document.getElementById("sections");
-  root.innerHTML = "";
-
-  groups.forEach((g,i)=>{
-    let visible = g.items.map((item,j)=>({item,j}))
-      .filter(x => filter==="all" ||
-        (filter==="done" ? !!checks[i+"-"+x.j] :
-         !checks[i+"-"+x.j]));
-
-    if(!visible.length) return;
-
-    let done = g.items.filter((x,j)=>checks[i+"-"+j]).length;
-    let section = document.createElement("section");
-    section.className = "section";
-
-    let head = document.createElement("div");
-    head.className = "section-head";
-    head.innerHTML =
-      '<div><div class="section-title"></div>'+
-      '<div class="section-count"></div></div>'+
-      '<span class="arrow"></span>';
-    head.querySelector(".section-title").textContent = g.title;
-    head.querySelector(".section-count").textContent =
-      done+" / "+g.items.length+" packed";
-    head.querySelector(".arrow").textContent =
-      expanded.has(i) ? "⌃" : "⌄";
-
-    head.onclick = () => {
-      expanded.has(i) ? expanded.delete(i) : expanded.add(i);
-      render();
-    };
-    section.appendChild(head);
-
-    if(expanded.has(i)) {
-      let list = document.createElement("div");
-      list.className = "items";
-      visible.forEach(({item,j})=>{
-        let label = document.createElement("label");
-        label.className = "item"+(checks[i+"-"+j]?" done":"");
-        let input = document.createElement("input");
-        input.type = "checkbox";
-        input.checked = !!checks[i+"-"+j];
-        input.addEventListener("change",()=>{
-          checks[i+"-"+j] = input.checked;
-          save();
-          updateProgress();
-          render();
-        });
-        let span = document.createElement("span");
-        span.textContent = item;
-        label.append(input,span);
-        list.appendChild(label);
+const STORAGE_KEY = "packingLists_multiTrip_v2";
+const uid = () => "id_" + Math.random().toString(36).slice(2,10) + Date.now().toString(36);
+const starterSections = [
+["👶 Baby – Travel equipment","Baby monitor|Monitor screen|Monitor clip|Monitor charger and cable|Sound machine|Sound machine cable|Stroller|Stroller rain cover|Stroller bag|Baby carrier|Travel cot|Cot mattress protectors|Cot sheets|Diaper bag|Changing mat|Tummy time mat|Baby blanket"],
+["👶 Baby – Diapering & feeding","Diapers|Overnight diapers|Swim diapers|Wipes|Bum cream|Microfiber cloths|Bottles|Formula|Baby food|Bottle brush|Bibs|Burp cloths|Baby bowls|Baby spoons|Baby towel"],
+["👶 Baby – Clothing & entertainment","Bodysuits / onesies|Tops|Bottoms|Pajamas|Socks|Sleep sacks|Hat|Toys|Books|Pacifiers"],
+["👶 Baby – Toiletries & health","Baby soap / body wash|Baby lotion|Vaseline|Nail trimmer|Thermometer|Nose spray|Paracetamol|Teething gel"],
+["👶 Baby – Documents","Ollie's passport|Birth certificate copy|Residence permit / travel documents"],
+["🧴 Hair care","Shampoo|Conditioner|Hairbrush|Comb|Hair ties|Bobby pins|Hair clips|Hair oil|Leave-in conditioner|Styling cream|Air dry cream|Dry shampoo|K18 / Olaplex treatment|Blow dryer|Hot brush / blow-dry brush|Straightener"],
+["🧴 Face & skincare","Makeup remover|Cotton pads|Face wash|Hyaluronic acid|Face serums|Face moisturizer|Retinol / A313|Spot cream|Spot stickers|Lip balm|Face-washing headband"],
+["🧴 Body toiletries","Body wash|Body lotion|Deodorant|Perfume|Hand lotion|Hand sanitizer|Razor|Self-tanning lotion"],
+["🪥 Dental & nails","Toothbrush|Toothpaste|Floss|Nail clipper|Nail file|Nail polish|Nail polish remover|Toe separators"],
+["💊 Medication & supplements","Medication / vitamins|Paracetamol|Ibuprofen|Antacids / Tums|Nausea medication|Prenatals (if applicable)"],
+["👗 Clothing","__OUTFITS__"],
+["🩲 Underwear & sleepwear","__Q:Daytime underwear__|__Q:Nighttime underwear__|__Q:Socks__|Pyjamas|Sleep shorts|Eye mask"],
+["👟 Shoes","Slippers|__BLANK_SHOE__"],
+["👜 Accessories & jewellery","Belt|Purse|Wallet|Sunglasses|Glasses|Wedding rings|Necklaces|Earrings|Other jewellery"],
+["💻 Electronics","Phone|Phone charger|Laptop|Laptop charger|iPad|iPad charger|AirPods|AirPods charger|Plug-in headphones|Headphone splitter|Power adaptor|SIM card"],
+["💻 Work","Work laptop|Work laptop charger|Portable laptop stand|Mouse|Mouse cable|Keyboard|Pencil case|Work notebook"],
+["✈️ Airplane bag","Passport|Wallet|Visa / travel documents|Phone|Phone charger|Headphones|AirPods|AirPods charger|Glasses|Sunglasses|Eye mask|Earplugs|Neck pillow|Back pillow|Foot hammock|Tissues|Hand sanitizer|Hand lotion|Chapstick|Nose moisturizer|Snacks / instant oats|Travel medication|Cleaning wipes|Diaper bag"],
+["🏠 Miscellaneous","Microfiber towels|Steamer|Wrinkle-release spray|Laundry bags|Gifts"],
+["❄️ Winter / cold weather","Winter coat|Thermal layers|Mittens / gloves|Scarf|Hat|Warm socks|Winter boots|Thick tights"],
+["☀️ Summer / beach","Body sunscreen|Face sunscreen|Sun hat / cap|Swimsuits|Beach coverup|Flip flops|Beach bag|Beach towels|Swim diapers|UV tent|Bug spray|After-sun lotion|Baby sun protection"],
+["🌧️ Rainy weather","Raincoat / waterproof jacket|Umbrella|Baby raincoat|Stroller rain cover"]
+];
+function makeItem(text){return {id:uid(),text,done:false};}
+function makeStarterSections(){
+  return starterSections.map(([title,raw])=>{
+    let items=raw.split("|").filter(Boolean).map(makeItem);
+    if(title==="👶 Baby – Clothing & entertainment"){
+      items=items.map(item=>{
+        const keys={"Bodysuits / onesies":"bodysuits","Tops":"tops","Bottoms":"bottoms"};
+        return keys[item.text]?{id:uid(),kind:"quantity",quantityKey:keys[item.text],text:item.text}:item;
       });
-      section.appendChild(list);
     }
-    root.appendChild(section);
+    if(title==="👗 Clothing") items=[{id:uid(),kind:"outfits",text:"Outfits"}];
+    if(title==="🩲 Underwear & sleepwear"){
+      const keys={"Daytime underwear":"daytime","Nighttime underwear":"nighttime","Socks":"socks"};
+      items=items.map(item=>keys[item.text]?{id:uid(),kind:"quantity",quantityKey:keys[item.text],text:item.text}:item);
+    }
+    if(title==="👟 Shoes") items=items.map(item=>item.text==="__BLANK_SHOE__"?{id:uid(),kind:"blankshoe",text:"",done:false}:item);
+    return {id:uid(),title,items,open:true};
   });
-
-  if(!root.children.length) {
-    root.innerHTML = '<div class="empty">Nothing here yet ❤️</div>';
-  }
-  updateProgress();
 }
-
-document.querySelectorAll("[data-filter]").forEach(btn=>{
-  btn.onclick=()=>{
-    filter=btn.dataset.filter;
-    document.querySelectorAll("[data-filter]").forEach(b=>
-      b.classList.toggle("active",b===btn));
-    render();
-  };
-});
-
-function resetList() {
-  if(confirm("Reset all packing checkmarks for a new trip?")) {
-    checks={};
-    save();
-    filter="all";
-    expanded=new Set([0]);
-    document.querySelectorAll("[data-filter]").forEach(b=>
-      b.classList.toggle("active",b.dataset.filter==="all"));
-    render();
+let state = loadState();
+let currentTripId = null, filter = "all", editingItemId = null, modalMode = "create", editingTripId = null;
+function loadState(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY));
+    if(saved && Array.isArray(saved.trips)) return saved;
+  }catch(e){}
+  return {trips:[]};
+}
+function persist(){
+  try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));}
+  catch(e){alert("Your browser could not save the list. You may need to allow local storage or free some browser space.");}
+}
+function currentTrip(){return state.trips.find(t=>t.id===currentTripId);}
+function createTrip(name,days){
+  const trip={id:uid(),name:name.trim()||"New trip",days:Math.max(1,Math.min(365,Number(days)||1)),sections:makeStarterSections(),createdAt:Date.now()};
+  state.trips.push(trip);persist();currentTripId=trip.id;filter="all";render();
+}
+function openModal(mode="create",trip=null){
+  modalMode=mode;editingTripId=trip?.id||null;
+  document.getElementById("modalTitle").textContent=mode==="create"?"Create a packing list":"Edit trip details";
+  document.getElementById("saveModal").textContent=mode==="create"?"Create trip":"Save changes";
+  document.getElementById("tripNameInput").value=trip?.name||"";
+  document.getElementById("tripDaysInput").value=trip?.days||7;
+  document.getElementById("modalBackdrop").style.display="flex";
+  document.getElementById("tripNameInput").focus();
+}
+function closeModal(){document.getElementById("modalBackdrop").style.display="none";}
+document.getElementById("cancelModal").onclick=closeModal;
+document.getElementById("modalBackdrop").addEventListener("click",e=>{if(e.target.id==="modalBackdrop")closeModal();});
+document.getElementById("saveModal").onclick=()=>{
+  const name=document.getElementById("tripNameInput").value.trim()||"New trip";
+  const days=Math.max(1,Math.min(365,Number(document.getElementById("tripDaysInput").value)||1));
+  if(modalMode==="create") createTrip(name,days);
+  else{
+    const trip=state.trips.find(t=>t.id===editingTripId);
+    if(trip){trip.name=name;trip.days=days;persist();render();}
+  }
+  closeModal();
+};
+document.getElementById("newTripTop").onclick=()=>openModal("create");
+function escapeHTML(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function allRenderedItems(section,trip){
+  const out=[];
+  for(const item of section.items){
+    if(item.kind==="outfits"){
+      for(let n=1;n<=trip.days;n++)out.push({id:section.id+"_outfit_"+n,text:`Day ${n} outfit`,done:!!trip.checks?.[section.id+"_outfit_"+n],dynamic:true});
+    }else if(item.kind==="quantity"){
+      const id=section.id+"_quantity_"+item.quantityKey;
+      const labels={bodysuits:"Bodysuits / onesies",tops:"Tops",bottoms:"Bottoms",daytime:"Daytime underwear",nighttime:"Nighttime underwear",socks:"Socks"};
+      out.push({id,text:`${labels[item.quantityKey]} (${trip.days})`,done:!!trip.checks?.[id],dynamic:true});
+    }else if(item.kind==="blankshoe"){
+      out.push({id:item.id,text:item.text||"",done:!!item.done,blank:true});
+    }else out.push(item);
+  }
+  return out;
+}
+function installDynamicTypes(trip){
+  trip.checks=trip.checks||{};
+  const baby=trip.sections.find(s=>s.title==="👶 Baby – Clothing & entertainment");
+  if(baby){
+    const replace=(label,key)=>{const i=baby.items.findIndex(x=>x.text===label);if(i>=0)baby.items[i]={id:uid(),kind:"quantity",quantityKey:key,text:label,done:false};};
+    replace("Bodysuits / onesies","bodysuits");replace("Tops","tops");replace("Bottoms","bottoms");
+  }
+  const clothes=trip.sections.find(s=>s.title==="👗 Clothing");
+  if(clothes && !clothes.items.some(x=>x.kind==="outfits"))clothes.items=[{id:uid(),kind:"outfits",text:"Outfits"}];
+  const underwear=trip.sections.find(s=>s.title==="🩲 Underwear & sleepwear");
+  if(underwear){
+    [["Daytime underwear","daytime"],["Nighttime underwear","nighttime"],["Socks","socks"]].forEach(([label,key])=>{
+      const i=underwear.items.findIndex(x=>x.text===label||x.text.startsWith(label+" ("));
+      if(i>=0)underwear.items[i]={id:uid(),kind:"quantity",quantityKey:key,text:label};
+    });
+  }
+  trip.sections.forEach(s=>s.items.forEach((it,i)=>{
+    if(it.text==="__BLANK_SHOE__")s.items[i]={id:uid(),kind:"blankshoe",text:""};
+  }));
+}
+function renderHome(){
+  const app=document.getElementById("app");
+  if(!state.trips.length){
+    app.innerHTML=`<div class="card empty"><h2>Your trips will appear here</h2><p>Create your first packing list to get started.</p><button class="primary" onclick="openModal('create')">＋ Create your first trip</button></div>`;
+    return;
+  }
+  app.innerHTML=`<div class="settings-row"><div><h2>Your trips</h2><div class="muted">Each trip has its own items, duration and packing progress.</div></div><button class="primary" onclick="openModal('create')">＋ New trip</button></div><div class="trip-grid" style="margin-top:16px">${state.trips.map(t=>{
+    const total=t.sections.reduce((n,s)=>n+allRenderedItems(s,t).length,0);
+    const done=t.sections.reduce((n,s)=>n+allRenderedItems(s,t).filter(x=>x.done||t.checks?.[x.id]).length,0);
+    const pct=total?Math.round(done/total*100):0;
+    return `<article class="trip-card"><h3>${escapeHTML(t.name)}</h3><div class="muted">${t.days} days · ${pct}% packed</div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="muted">${done} of ${total} items packed</div><div class="inline-edit" style="margin-top:14px"><button class="primary" onclick="openTrip('${t.id}')">Open list</button><button class="small" onclick="editTrip('${t.id}')">Edit</button><button class="small" onclick="duplicateTrip('${t.id}')">Duplicate trip</button><button class="small danger" onclick="deleteTrip('${t.id}')">Delete</button></div></article>`;
+  }).join("")}</div>`;
+}
+function openTrip(id){currentTripId=id;filter="all";render();}
+function editTrip(id){const t=state.trips.find(x=>x.id===id);if(t)openModal("edit",t);}
+function duplicateTrip(id){
+  const source=state.trips.find(x=>x.id===id);if(!source)return;
+  const copy=JSON.parse(JSON.stringify(source));copy.id=uid();copy.name=source.name+" (copy)";copy.createdAt=Date.now();copy.checks={};
+  copy.sections.forEach(s=>{s.id=uid();s.items.forEach(i=>{i.id=uid();i.done=false;});});
+  state.trips.push(copy);persist();render();
+}
+function deleteTrip(id){
+  const t=state.trips.find(x=>x.id===id);if(!t)return;
+  if(confirm(`Delete "${t.name}" and its packing progress? This cannot be undone.`)){
+    state.trips=state.trips.filter(x=>x.id!==id);if(currentTripId===id)currentTripId=null;persist();render();
   }
 }
-
+function renderTrip(){
+  const trip=currentTrip(),app=document.getElementById("app");if(!trip){renderHome();return;}
+  const all=trip.sections.flatMap(s=>allRenderedItems(s,trip));
+  const done=all.filter(x=>x.done||trip.checks?.[x.id]).length,pct=all.length?Math.round(done/all.length*100):0;
+  app.innerHTML=`
+  <div class="topbar no-print"><button onclick="backHome()">← All trips</button><div class="inline-edit"><button onclick="editTrip('${trip.id}')">Trip settings</button><button onclick="startNewTrip('${trip.id}')">↻ Start new trip</button><button onclick="window.print()">Print</button></div></div>
+  <h2>${escapeHTML(trip.name)}</h2><div class="subtitle">${trip.days} day${trip.days===1?"":"s"}</div>
+  <div class="card"><div class="progress-top"><strong>Packing progress</strong><div class="percent">${pct}%</div></div><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="muted">${done} of ${all.length} items packed · Saves automatically</div></div>
+  <div class="filters no-print"><button class="${filter==="all"?"active":""}" onclick="setFilter('all')">All</button><button class="${filter==="todo"?"active":""}" onclick="setFilter('todo')">To pack</button><button class="${filter==="done"?"active":""}" onclick="setFilter('done')">Packed</button><button onclick="addSection()">＋ Add section</button></div>
+  <div id="sections">${trip.sections.map(s=>renderSection(s,trip)).join("")}</div>`;
+}
+function renderSection(section,trip){
+  const items=allRenderedItems(section,trip);
+  const visible=items.filter(it=>filter==="all"||(filter==="done"?(trip.checks?.[it.id]||it.done):!(trip.checks?.[it.id]||it.done)));
+  if(filter!=="all"&&!visible.length)return "";
+  const complete=items.filter(it=>trip.checks?.[it.id]||it.done).length;
+  return `<section class="section"><div class="section-head"><div class="section-heading" onclick="toggleSection('${section.id}')"><div class="section-title">${escapeHTML(section.title)}</div><div class="section-count">${complete} / ${items.length} packed</div></div><div class="section-tools no-print"><button class="small" onclick="renameSection('${section.id}')">Rename</button><button class="small" onclick="duplicateSection('${section.id}')">Duplicate</button><button class="small danger" onclick="removeSection('${section.id}')">×</button><button class="small" onclick="toggleSection('${section.id}')">${section.open?"⌃":"⌄"}</button></div></div>
+  ${section.open?`<div class="items">${visible.map(it=>renderItem(it,section,trip)).join("")}<div class="add-row no-print"><input id="add_${section.id}" type="text" placeholder="Add an item…"><button onclick="addItem('${section.id}')">＋ Add</button></div>${section.items.some(i=>i.kind==="blankshoe")?`<div class="no-print" style="margin-top:8px"><button class="small" onclick="addBlankShoe('${section.id}')">＋ Add another blank shoe line</button></div>`:""}</div>`:""}</section>`;
+}
+function renderItem(item,section,trip){
+  const checked=!!(trip.checks?.[item.id]||item.done);
+  const editable=editingItemId===item.id&&!item.dynamic;
+  return `<div class="item ${checked?"done":""}"><input type="checkbox" ${checked?"checked":""} onchange="toggleItem('${section.id}','${item.id}',this.checked)">${editable?`<input class="item-edit" id="edit_${item.id}" value="${escapeHTML(item.text)}" onkeydown="if(event.key==='Enter')saveItem('${section.id}','${item.id}')"><button class="small" onclick="saveItem('${section.id}','${item.id}')">Save</button>`:`<span class="item-text">${escapeHTML(item.text)}</span>`}<div class="item-actions no-print">${!item.dynamic&&!editable?`<button class="small" onclick="editItem('${item.id}')">Edit</button>`:""}${!item.dynamic?`<button class="small danger" onclick="removeItem('${section.id}','${item.id}')">×</button>`:""}</div></div>`;
+}
+function render(){if(currentTripId&&currentTrip())renderTrip();else{currentTripId=null;renderHome();}}
+function backHome(){currentTripId=null;editingItemId=null;render();}
+function setFilter(f){filter=f;render();}
+function toggleSection(id){const s=currentTrip().sections.find(x=>x.id===id);if(s){s.open=!s.open;persist();render();}}
+function findSection(id){return currentTrip()?.sections.find(s=>s.id===id);}
+function toggleItem(sectionId,itemId,checked){
+  const t=currentTrip(),s=findSection(sectionId);if(!t||!s)return;
+  const item=allRenderedItems(s,t).find(x=>x.id===itemId);
+  if(item?.dynamic){t.checks=t.checks||{};t.checks[itemId]=checked;}
+  else{const original=s.items.find(x=>x.id===itemId);if(original)original.done=checked;}
+  persist();render();
+}
+function editItem(id){editingItemId=id;render();}
+function saveItem(sectionId,id){
+  const s=findSection(sectionId),item=s?.items.find(x=>x.id===id);const input=document.getElementById("edit_"+id);
+  if(item&&input){item.text=input.value.trim()||item.text;persist();}
+  editingItemId=null;render();
+}
+function addItem(sectionId){
+  const s=findSection(sectionId),input=document.getElementById("add_"+sectionId);if(!s||!input)return;
+  const text=input.value.trim();if(!text)return;s.items.push(makeItem(text));persist();render();
+}
+function removeItem(sectionId,id){
+  const s=findSection(sectionId);if(!s)return;
+  if(confirm("Remove this item?")){s.items=s.items.filter(x=>x.id!==id);if(currentTrip().checks)delete currentTrip().checks[id];persist();render();}
+}
+function renameSection(id){
+  const s=findSection(id);if(!s)return;const name=prompt("Section name:",s.title);
+  if(name&&name.trim()){s.title=name.trim();persist();render();}
+}
+function duplicateSection(id){
+  const t=currentTrip(),s=findSection(id);if(!s)return;
+  const copy=JSON.parse(JSON.stringify(s));copy.id=uid();copy.title=s.title+" (copy)";copy.items.forEach(i=>{i.id=uid();i.done=false;});copy.open=true;t.sections.splice(t.sections.indexOf(s)+1,0,copy);persist();render();
+}
+function removeSection(id){
+  const t=currentTrip();if(!confirm("Remove this entire section?"))return;
+  t.sections=t.sections.filter(s=>s.id!==id);persist();render();
+}
+function addSection(){
+  const t=currentTrip(),name=prompt("Name your new section:");if(!name||!name.trim())return;
+  t.sections.push({id:uid(),title:name.trim(),items:[],open:true});persist();render();
+}
+function addBlankShoe(sectionId){
+  const s=findSection(sectionId);if(!s)return;
+  s.items.push({id:uid(),kind:"blankshoe",text:"",done:false});persist();render();
+}
+function startNewTrip(id){
+  const t=state.trips.find(x=>x.id===id);if(!t)return;
+  if(!confirm(`Start a new packing run for "${t.name}"? This will clear checkmarks but keep your sections and custom items.`))return;
+  t.checks={};t.sections.forEach(s=>s.items.forEach(i=>{i.done=false;}));persist();render();
+}
 render();
 </script>
 </body>
