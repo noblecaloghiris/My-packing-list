@@ -110,7 +110,7 @@ const starterSections = [
 ["🪥 Dental & nails","Toothbrush|Toothpaste|Floss|Nail clipper|Nail file|Nail polish|Nail polish remover|Toe separators"],
 ["💊 Medication & supplements","Medication / vitamins|Paracetamol|Ibuprofen|Antacids / Tums|Nausea medication|Prenatals (if applicable)"],
 ["👗 Clothing","__OUTFITS__"],
-["🩲 Underwear & sleepwear","__Q:Daytime underwear__|__Q:Nighttime underwear__|__Q:Socks__|Pyjamas|Sleep shorts|Eye mask"],
+["🩲 Underwear & sleepwear","Daytime underwear|Nighttime underwear|Socks|Pyjamas|Sleep shorts|Eye mask"],
 ["👟 Shoes","Slippers|__BLANK_SHOE__"],
 ["👜 Accessories & jewellery","Belt|Purse|Wallet|Sunglasses|Glasses|Wedding rings|Necklaces|Earrings|Other jewellery"],
 ["💻 Electronics","Phone|Phone charger|Laptop|Laptop charger|iPad|iPad charger|AirPods|AirPods charger|Plug-in headphones|Headphone splitter|Power adaptor|SIM card"],
@@ -186,14 +186,38 @@ function allRenderedItems(section,trip){
   const out=[];
   for(const item of section.items){
     if(item.kind==="outfits"){
-      for(let n=1;n<=trip.days;n++)out.push({id:section.id+"_outfit_"+n,text:`Day ${n} outfit`,done:!!trip.checks?.[section.id+"_outfit_"+n],dynamic:true});
+      for(let n=1;n<=trip.days;n++){
+        const id=section.id+"_outfit_"+n;
+        out.push({
+          id,
+          text:`Day ${n} outfit`,
+          done:!!trip.checks?.[id],
+          dynamic:true,
+          outfit:true,
+          note:trip.outfitNotes?.[id]||""
+        });
+      }
     }else if(item.kind==="quantity"){
       const id=section.id+"_quantity_"+item.quantityKey;
-      const labels={bodysuits:"Bodysuits / onesies",tops:"Tops",bottoms:"Bottoms",daytime:"Daytime underwear",nighttime:"Nighttime underwear",socks:"Socks"};
-      out.push({id,text:`${labels[item.quantityKey]} (${trip.days})`,done:!!trip.checks?.[id],dynamic:true});
+      const labels={
+        bodysuits:"Bodysuits / onesies",
+        tops:"Tops",
+        bottoms:"Bottoms",
+        daytime:"Daytime underwear",
+        nighttime:"Nighttime underwear",
+        socks:"Socks"
+      };
+      out.push({
+        id,
+        text:`${labels[item.quantityKey]} (${trip.days})`,
+        done:!!trip.checks?.[id],
+        dynamic:true
+      });
     }else if(item.kind==="blankshoe"){
       out.push({id:item.id,text:item.text||"",done:!!item.done,blank:true});
-    }else out.push(item);
+    }else{
+      out.push(item);
+    }
   }
   return out;
 }
@@ -279,6 +303,14 @@ function toggleItem(sectionId,itemId,checked){
   if(item?.dynamic){t.checks=t.checks||{};t.checks[itemId]=checked;}
   else{const original=s.items.find(x=>x.id===itemId);if(original)original.done=checked;}
   persist();render();
+}
+function saveOutfitNote(itemId,value){
+  const trip=currentTrip();
+  if(!trip)return;
+
+  trip.outfitNotes=trip.outfitNotes||{};
+  trip.outfitNotes[itemId]=value;
+  persist();
 }
 function editItem(id){editingItemId=id;render();}
 function saveItem(sectionId,id){
